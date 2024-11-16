@@ -6,6 +6,9 @@ if (notes) {
     notes.forEach((note) => addNewNote(note));
 }
 
+// Add event listener to the add button, which creates a new note on click
+addBtn.addEventListener("click", () => addNewNote());
+
 // Function to add a new note to the page (will get hoisted, arrow functions can't get hoisted)
 function addNewNote(text = "") {
     // stub
