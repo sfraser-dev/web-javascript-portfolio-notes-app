@@ -7,3 +7,14 @@ body {
     padding: 0;
     font-family: sans-serif;
 }
+
+.add {
+    background-color: #9ec862;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 1rem 2rem;
+    margin-top: 3rem;
+    font-size: 1.2rem;
+}
