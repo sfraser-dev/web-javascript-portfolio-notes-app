@@ -49,6 +49,12 @@ function addNewNote(text = "") {
         updateLS();
     });
 
+    // Add an event listener to the edit button, which toggles the visibility of the main section and the textarea
+    editBtn.addEventListener("click", () => {
+        main.classList.toggle("hidden");
+        textArea.classList.toggle("hidden");
+    });
+
     // ... TODO
 }
 
