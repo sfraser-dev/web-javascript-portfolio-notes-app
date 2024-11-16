@@ -31,7 +31,25 @@ function addNewNote(text = "") {
     <textarea class="${text ? "hidden" : ""}"></textarea>
   `;
 
-  // ... TODO
+    // Get references to the edit and delete buttons, the main section, and the textarea within the new note element
+    const editBtn = note.querySelector(".edit");
+    const deleteBtn = note.querySelector(".delete");
+    const main = note.querySelector(".main");
+    const textArea = note.querySelector("textarea");
+
+    // Set the value of the textarea to the provided text, or an empty string if no text was provided
+    textArea.value = text;
+
+    // Set the innerHTML of the main section to the marked up text in the textarea
+    main.innerHTML = marked(text);
+
+    // Add an event listener to the delete button, which removes the note from the page and updates localStorage
+    deleteBtn.addEventListener("click", () => {
+        note.remove();
+        updateLS();
+    });
+
+    // ... TODO
 }
 
 // Function to update the notes in localStorage with the current values in the textareas
