@@ -55,10 +55,28 @@ function addNewNote(text = "") {
         textArea.classList.toggle("hidden");
     });
 
-    // ... TODO
+    // Add an event listener to the textarea, which updates the marked up text in the main section and updates localStorage on input
+    textArea.addEventListener("input", (e) => {
+        const { value } = e.target;
+        main.innerHTML = marked(value);
+        updateLS();
+    });
+
+    // Add the new note element to the body of the page
+    document.body.appendChild(note);
 }
 
 // Function to update the notes in localStorage with the current values in the textareas
 function updateLS() {
-    // stub
+    // Get all the note textareas on the page
+    const notesText = document.querySelectorAll("textarea");
+
+    // Create an empty array to store the values of the note textareas
+    const notes = [];
+
+    // Loop through each note textarea and push its value to the notes array
+    notesText.forEach((note) => notes.push(note.value));
+
+    // Set the notes in localStorage as a JSON string
+    localStorage.setItem("notes", JSON.stringify(notes));
 }
