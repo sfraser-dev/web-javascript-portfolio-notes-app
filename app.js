@@ -14,7 +14,6 @@ addBtn.addEventListener("click", () => addNewNote());
 
 // Function to add a new note to the page (will get hoisted, arrow functions can't get hoisted)
 function addNewNote(text = "") {
-
     // Create a new note element
     const note = document.createElement("div");
 
@@ -23,13 +22,13 @@ function addNewNote(text = "") {
 
     // Set the innerHTML of the new note element with HTML for a note with tools, a main section, and a textarea
     note.innerHTML = `
-    <div class="tools">
-      <button class="edit"><i class="fas fa-edit"></i></button>
-      <button class="delete"><i class="fas fa-trash-alt"></i></button>
-    </div>
-    <div class="main ${text ? "" : "hidden"}"></div>
-    <textarea class="${text ? "hidden" : ""}"></textarea>
-  `;
+        <div class="tools">
+            <button class="edit" aria-label="Edit note"><i class="fas fa-edit"></i></button>
+            <button class="delete" aria-label="Delete note"><i class="fas fa-trash-alt"></i></button>
+        </div>
+        <div class="main ${text ? "" : "hidden"}"></div>
+        <textarea class="${text ? "hidden" : ""}"></textarea>
+    `;
 
     // Get references to the edit and delete buttons, the main section, and the textarea within the new note element
     const editBtn = note.querySelector(".edit");
@@ -41,7 +40,17 @@ function addNewNote(text = "") {
     textArea.value = text;
 
     // Set the innerHTML of the main section to the marked up text in the textarea
-    main.innerHTML = marked(text);
+    main.innerHTML = DOMPurify.sanitize(marked(text));
+
+    // Highlight note when editing (on focus)
+    textArea.addEventListener("focus", () => {
+        note.classList.add("focused");
+    });
+
+    // Remove highlight when editing ends (on blur)
+    textArea.addEventListener("blur", () => {
+        note.classList.remove("focused");
+    });
 
     // Add an event listener to the delete button, which removes the note from the page and updates localStorage
     deleteBtn.addEventListener("click", () => {
@@ -53,12 +62,18 @@ function addNewNote(text = "") {
     editBtn.addEventListener("click", () => {
         main.classList.toggle("hidden");
         textArea.classList.toggle("hidden");
+
+        // Auto-focus the text area
+        if (!textArea.classList.contains("hidden")) {
+            textArea.focus();
+        }
     });
 
     // Add an event listener to the textarea, which updates the marked up text in the main section and updates localStorage on input
     textArea.addEventListener("input", (e) => {
         const { value } = e.target;
-        main.innerHTML = marked(value);
+        // Sanitise the text area input
+        main.innerHTML = DOMPurify.sanitize(marked(value));
         updateLS();
     });
 
